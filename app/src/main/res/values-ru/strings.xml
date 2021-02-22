@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">1lab</string>
+    <string name="efn">Введите первое число</string>
+    <string name="esn">Введите второе число</string>
+    <string name="Sum">Найти сумму</string>
+    <string name="Res">Результат здесь:</string>
+</resources>

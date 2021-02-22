@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">1lab</string>
+    <string name="efn">Enter first number</string>
+    <string name="esn">Enter second number</string>
+    <string name="Sum">Sum!</string>
+    <string name="Res">Result will be here</string>
+</resources>
