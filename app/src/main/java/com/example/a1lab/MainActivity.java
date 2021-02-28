@@ -2,8 +2,8 @@ package com.example.a1lab;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,18 +12,30 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Vector;
+
 public class MainActivity extends AppCompatActivity {
+
+    Vector<String> vectorForResults = new Vector<String>();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String[] Data;
+        String extraStr;
+        try {
+            Data = getIntent().getExtras().getStringArray("key");
+            for(int i = 0; i < Data.length; i++)
+                vectorForResults.add(Data[i]);
+        } catch (NullPointerException e ) {
+            Log.d("1", "something_else");
+        }
 
         int screenParams = getResources().getConfiguration().smallestScreenWidthDp;
         if(screenParams < 350) {
@@ -52,6 +64,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -62,13 +80,25 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.resultsList: {
+                String[] data = new String[vectorForResults.size()];
+                for(int i = 0; i < vectorForResults.size(); i++)
+                    data[i] = vectorForResults.get(i);
+                Bundle b = new Bundle();
+                b.putStringArray("key", data);
                 Intent Intent = new Intent(this, ListMenu.class);
+                Intent.putExtras(b);
                 startActivity(Intent);
                 return true;
             }
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void newElementToVector(String newElement)
+    {
+        vectorForResults.addElement(newElement);
+        Log.d("vectSize", String.valueOf(vectorForResults.size()));
     }
 
     public void SumNumbers(View view)
@@ -82,9 +112,13 @@ public class MainActivity extends AppCompatActivity {
                 Num = findViewById(R.id.SecondNumberInput);
                 SecondNum = Integer.parseInt(Num.getText().toString());
                 Sum = FirstNum + SecondNum;
+                newElementToVector(String.valueOf(FirstNum) + " + " + String.valueOf(SecondNum)
+                        + " = " + String.valueOf(Sum));
                 TextView ResultTextView = findViewById(R.id.Result);
-                ResultTextView.setText(Double.toString(Sum).substring(0, Double.toString(Sum).length() - 2));
-                Snackbar.make(view, Double.toString(Sum).substring(0, Double.toString(Sum).length() - 2), Snackbar.LENGTH_LONG)
+                ResultTextView.setText(Double.toString(Sum).substring(0,
+                        Double.toString(Sum).length() - 2));
+                Snackbar.make(view, Double.toString(Sum).substring(0,
+                        Double.toString(Sum).length() - 2), Snackbar.LENGTH_LONG)
                         .show();
                 break;
             }
@@ -94,9 +128,13 @@ public class MainActivity extends AppCompatActivity {
                 Num = findViewById(R.id.SecondNumberInput2);
                 SecondNum = Integer.parseInt(Num.getText().toString());
                 Sum = FirstNum + SecondNum;
+                newElementToVector(String.valueOf(FirstNum) + " + " + String.valueOf(SecondNum)
+                        + " = " + String.valueOf(Sum));
                 TextView ResultTextView = findViewById(R.id.Result2);
-                ResultTextView.setText(Double.toString(Sum).substring(0, Double.toString(Sum).length() - 2));
-                Snackbar.make(view, Double.toString(Sum).substring(0, Double.toString(Sum).length() - 2), Snackbar.LENGTH_LONG)
+                ResultTextView.setText(Double.toString(Sum).substring(0,
+                        Double.toString(Sum).length() - 2));
+                Snackbar.make(view, Double.toString(Sum).substring(0,
+                        Double.toString(Sum).length() - 2), Snackbar.LENGTH_LONG)
                         .show();
                 break;
             }
